@@ -95,19 +95,30 @@ active = 0
 status=""
 color=(0,0,0)
 
-def compute(ptA,ptB):
+def compute(ptA, ptB):
 	dist = np.linalg.norm(ptA - ptB)
 	return dist
 
-def blinked(a,b,c,d,e,f):
+def blinked(a, b, c, d, e, f): #36, 37, 38, 41, 40, 39
 	up = compute(b,d) + compute(c,e)
 	down = compute(a,f)
-	ratio = up/(2.0*down)
+	ratio = up/(2.0 * down)
 
 	#Checking if it is blinked
-	if(ratio>0.25):
+	if (ratio > 0.25):
 		return 2
-	elif(ratio>0.21 and ratio<=0.25):
+	elif (ratio > 0.21 and ratio <= 0.25):
+		return 1
+	else:
+		return 0
+
+def lip (a, b, c, d):
+	l = compute(a, d)
+	r = compute(b, d)
+	m = compute(c, d)
+
+	#Checking if it is blinked
+	if ((l > 2 * m) and (r > 2 * m)):
 		return 1
 	else:
 		return 0
@@ -140,8 +151,10 @@ def StartApp():
 					landmarks[38], landmarks[41], landmarks[40], landmarks[39])
 			right_blink = blinked(landmarks[42], landmarks[43],
 					landmarks[44], landmarks[47], landmarks[46], landmarks[45])
+			lip_motion = lip(landmarks[48], landmarks[54],
+					landmarks[51], landmarks[57])
 		
-			if (left_blink == 0 and right_blink == 0):
+			if (left_blink == 0 and right_blink == 0 and lip_motion == 0):
 				sleep += 1
 				drowsy = 0
 				active = 0
