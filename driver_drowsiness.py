@@ -41,7 +41,7 @@ quit_img = pygame.image.load("res/button_quit.png").convert_alpha()
 
 #create button instances
 resume_button = button.Button(304, 125, resume_img, 1)
-quit_button = button.Button(336, 375, quit_img, 1)
+quit_button = button.Button(310, 375, quit_img, 1)
 
 def draw_text(text, font, text_col, x, y):
     img = font.render(text, True, text_col)
