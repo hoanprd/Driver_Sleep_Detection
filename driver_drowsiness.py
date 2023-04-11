@@ -141,23 +141,28 @@ def StartApp():
 			x2 = face.right()
 			y2 = face.bottom()
 
+			#Create frames
 			face_frame = frame.copy()
 			cv2.rectangle(face_frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
-
+			
+			#Push the array data to the computed variable
 			landmarks = predictor(gray, face)
 			landmarks = face_utils.shape_to_np(landmarks)
 
+			#Call the handler function
 			left_blink = blinked(landmarks[36], landmarks[37],
 					landmarks[38], landmarks[41], landmarks[40], landmarks[39])
 			right_blink = blinked(landmarks[42], landmarks[43],
 					landmarks[44], landmarks[47], landmarks[46], landmarks[45])
 			lip_motion = lip(landmarks[48], landmarks[54],
 					landmarks[51], landmarks[57])
-		
+
+			#Check the return value of the eye and lip recognition function
 			if (left_blink == 0 and right_blink == 0 and lip_motion == 0):
 				sleep += 1
 				drowsy = 0
 				active = 0
+				#The return value with the test condition must be 6 frames
 				if (sleep > 6):
 					Drowsy_Alertsound.stop()
 					Sleepy_Alertsound.play()
@@ -167,6 +172,7 @@ def StartApp():
 				sleep = 0
 				active = 0
 				drowsy += 1
+				#The return value with the test condition must be 6 frames
 				if (drowsy > 6):
 					Sleepy_Alertsound.stop()
 					Drowsy_Alertsound.play()
@@ -176,12 +182,14 @@ def StartApp():
 				drowsy = 0
 				sleep = 0
 				active += 1
+				#The return value with the test condition must be 6 frames
 				if (active > 6):
 					Sleepy_Alertsound.stop()
 					Drowsy_Alertsound.stop()
 					status = "Active"
 					color = (0, 255, 0)
-		
+
+			#Display the results on the screen
 			cv2.putText(frame, status, (100,100), cv2.FONT_HERSHEY_SIMPLEX, 1.2, color,3)
 
 			for n in range(0, 68):
